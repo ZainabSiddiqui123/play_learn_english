@@ -72,12 +72,12 @@ class _MatchWordGameState extends State<MatchWordGame> {
     }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
       child: Material(
         color: color,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(14),
         child: InkWell(
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(14),
           onTap: isAnswered ? null : () {
             setState(() {
               _selected = option['name'];
@@ -86,12 +86,12 @@ class _MatchWordGameState extends State<MatchWordGame> {
           },
           child: Container(
             width: double.infinity,
-            height: 70,
+            height: 48, // Smaller height
             alignment: Alignment.center,
             child: Text(
               option['name'],
               style: const TextStyle(
-                fontSize: 28,
+                fontSize: 20, // Smaller font
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
                 letterSpacing: 1,

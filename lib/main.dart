@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_learn_english/screens/quiz_screen.dart';
 import 'screens/splash_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/alphabets_screen.dart';
@@ -8,7 +9,7 @@ import 'screens/guess_alphabet_game.dart';
 import 'screens/match_word_game.dart';
 import 'screens/find_color_game.dart';
 import 'screens/memory_game.dart';
-// ...baqi screens ke imports yahan add karen
+import 'screens/stories_screen.dart'; // <-- yeh line add karo
 
 void main() {
   runApp(const PlayLearnApp());
@@ -23,7 +24,7 @@ class PlayLearnApp extends StatelessWidget {
       title: 'Play & Learn English',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xFFF8F8FF), // Light cream
+        scaffoldBackgroundColor: Color(0xFFF8F8FF),
         primarySwatch: Colors.deepPurple,
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.deepPurple,
@@ -50,7 +51,8 @@ class PlayLearnApp extends StatelessWidget {
         '/match-word': (context) => MatchWordGame(),
         '/find-color': (context) => FindColorGame(),
         '/memory-game': (context) => MemoryGame(),
-        // ...baqi routes yahan add karen
+        '/stories': (context) => StoriesScreen(), // <-- yeh line add karo
+        '/quiz': (context) => QuizScreen(),
       },
     );
   }

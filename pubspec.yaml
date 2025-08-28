@@ -1,22 +1,28 @@
 name: play_learn_english
-description: A new Flutter project.
-
-publish_to: 'none'
+description: A fun app for kids to play and learn English.
 
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ">=2.17.0 <4.0.0"
 
 dependencies:
-  share_plus: ^7.2.1
-  url_launcher: ^6.2.5
   flutter:
     sdk: flutter
+  cupertino_icons: ^1.0.2
+  share_plus: ^7.2.1
+  url_launcher: ^6.2.5
+  flutter_tts: ^3.8.5
   audioplayers: ^5.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
 
 flutter:
   uses-material-design: true
+
   assets:
-    - assets/images/
     - assets/audio/
+    - assets/images/
