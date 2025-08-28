@@ -16,7 +16,8 @@ class _FindColorGameState extends State<FindColorGame> {
     {'name': 'Yellow', 'color': Colors.yellow},
     {'name': 'Purple', 'color': Colors.purple},
     {'name': 'Orange', 'color': Colors.orange},
-    // aur bhi add kar sakte hain
+    {'name': 'Pink', 'color': Colors.pink},
+    {'name': 'Brown', 'color': Colors.brown},
   ];
 
   late Map<String, dynamic> _currentColor;
@@ -50,81 +51,130 @@ class _FindColorGameState extends State<FindColorGame> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Find the Color', style: TextStyle(color: Colors.white)),
+        title: const Text('Find the Color'),
         backgroundColor: Colors.deepPurple,
         centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white),
       ),
-      backgroundColor: const Color(0xFF232526),
-      body: Padding(
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Tap the color: ${_currentColor['name']}",
-              style: const TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 32),
-            Wrap(
-              spacing: 24,
-              runSpacing: 24,
-              children: _options.map((option) {
-                final isCorrect = option == _currentColor;
-                final isSelected = _selected == option;
-                Color borderColor = Colors.white;
-                if (_showResult) {
-                  if (isCorrect) borderColor = Colors.green;
-                  else if (isSelected) borderColor = Colors.red;
-                }
-                return GestureDetector(
-                  onTap: _showResult
-                      ? null
-                      : () {
-                          setState(() {
-                            _selected = option;
-                            _showResult = true;
-                          });
-                        },
-                  child: Container(
-                    width: 70,
-                    height: 70,
-                    decoration: BoxDecoration(
-                      color: option['color'],
-                      shape: BoxShape.circle,
-                      border: Border.all(color: borderColor, width: 5),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "Find the Color",
+                style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.deepPurple,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 12),
+              Text(
+                "Tap the color: ${_currentColor['name']}",
+                style: const TextStyle(
+                  fontSize: 22,
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 32),
+              // 2x2 Grid for color options
+              SizedBox(
+                width: 260,
+                child: Column(
+                  children: [
+                    for (int row = 0; row < 2; row++)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          for (int col = 0; col < 2; col++)
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: _buildColorButton(_options[row * 2 + col]),
+                            ),
+                        ],
+                      ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 32),
+              if (_showResult && _selected != null)
+                Text(
+                  _selected == _currentColor ? "Correct!" : "Incorrect!",
+                  style: TextStyle(
+                    color: _selected == _currentColor ? Colors.green : Colors.red,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              if (_showResult)
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: ElevatedButton(
+                    onPressed: _generateQuestion,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.deepPurple,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+                    ),
+                    child: const Text(
+                      "Next",
+                      style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ),
-                );
-              }).toList(),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildColorButton(Map<String, dynamic> option) {
+    final isCorrect = option == _currentColor;
+    final isSelected = _selected == option;
+    Color borderColor = Colors.deepPurple.shade100;
+    double borderWidth = 4;
+    if (_showResult) {
+      if (isCorrect) {
+        borderColor = Colors.green;
+        borderWidth = 6;
+      } else if (isSelected) {
+        borderColor = Colors.red;
+        borderWidth = 6;
+      }
+    }
+    return GestureDetector(
+      onTap: _showResult
+          ? null
+          : () {
+              setState(() {
+                _selected = option;
+                _showResult = true;
+              });
+            },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        width: 100,
+        height: 100,
+        decoration: BoxDecoration(
+          color: option['color'],
+          shape: BoxShape.circle,
+          border: Border.all(color: borderColor, width: borderWidth),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 8,
+              offset: const Offset(0, 4),
             ),
-            const SizedBox(height: 24),
-            if (_showResult && _selected != null)
-              Text(
-                _selected == _currentColor ? "Correct!" : "Incorrect!",
-                style: TextStyle(
-                  color: _selected == _currentColor ? Colors.green : Colors.red,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            if (_showResult)
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: ElevatedButton(
-                  onPressed: _generateQuestion,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepPurple,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                  ),
-                  child: const Text(
-                    "Next",
-                    style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
           ],
         ),
+        child: _showResult && isCorrect
+            ? const Icon(Icons.check, color: Colors.white, size: 40)
+            : null,
       ),
     );
   }

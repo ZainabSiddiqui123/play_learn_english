@@ -44,7 +44,7 @@ class _WordCategoryScreenState extends State<WordCategoryScreen> {
     if (lower.contains('xanadu')) return const Color(0xFF738678);
     if (lower.contains('zaffre')) return const Color(0xFF0014A8);
     if (lower.contains('indigo')) return Colors.indigo;
-    if (lower.contains('lavender')) return const Color(0xFFE6E6FA);
+    if (lower.contains('lavender')) return const Color.fromARGB(255, 191, 191, 241);
     if (lower.contains('fuchsia')) return const Color(0xFFFF00FF);
     if (lower.contains('emerald')) return const Color(0xFF50C878);
     if (lower.contains('crimson')) return const Color(0xFFDC143C);
@@ -53,8 +53,19 @@ class _WordCategoryScreenState extends State<WordCategoryScreen> {
     if (lower.contains('ultramarine')) return const Color(0xFF3F00FF);
     if (lower.contains('quartz')) return const Color(0xFFD9D9F3);
     if (lower.contains('magenta')) return Colors.purpleAccent;
-    if (lower.contains('maroon')) return Colors.brown;
+    if (lower.contains('maroon')) return const Color.fromARGB(255, 141, 33, 18);
     if (lower.contains('mint')) return Colors.greenAccent;
+    if (lower.contains('purple')) return Colors.deepPurpleAccent;
+    if (lower.contains('navy')) return Colors.blueAccent;
+    if (lower.contains('aqua')) return const Color.fromARGB(255, 43, 192, 172);
+    if (lower.contains('nude')) return const Color.fromARGB(255, 231, 149, 111);
+    if (lower.contains('olive')) return const Color.fromARGB(255, 33, 66, 11);
+    if (lower.contains('khaki')) return const Color.fromARGB(255, 155, 156, 92);
+    if (lower.contains('jade')) return const Color.fromARGB(176, 53, 148, 69);
+    if (lower.contains('ivory')) return const Color.fromARGB(255, 212, 203, 182);
+    if (lower.contains('honey')) return const Color.fromARGB(255, 161, 119, 1);
+    if (lower.contains('eggplant')) return const Color.fromARGB(255, 79, 6, 88);
+    if (lower.contains('denim')) return const Color.fromARGB(255, 27, 83, 148);
     return Colors.grey[300];
   }
 
