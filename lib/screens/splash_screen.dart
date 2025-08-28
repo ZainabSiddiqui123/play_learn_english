@@ -8,136 +8,96 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _scaleAnimation;
-  late Animation<double> _fadeAnimation;
+class _SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
+  late AnimationController _textController;
+  late Animation<Offset> _textSlide;
+  late Animation<double> _textFade;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 1800),
+
+    _textController = AnimationController(
+      duration: const Duration(milliseconds: 1200),
       vsync: this,
     )..forward();
 
-    _scaleAnimation = Tween<double>(begin: 0.7, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.elasticOut),
+    _textSlide = Tween<Offset>(
+      begin: const Offset(0, 0.3),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(parent: _textController, curve: Curves.easeOut),
     );
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeIn),
+    _textFade = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _textController, curve: Curves.easeIn),
     );
 
-    Timer(const Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 2), () {
       Navigator.pushReplacementNamed(context, '/home');
     });
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _textController.dispose();
     super.dispose();
   }
 
-  // Vibrant rainbow gradient for text
-  Shader get _rainbowShader => const LinearGradient(
-        colors: <Color>[
-          Color(0xFF00C6FF), // blue
-          Color(0xFF0072FF), // deep blue
-          Color(0xFF8E2DE2), // purple
-          Color(0xFFDA22FF), // magenta
-          Color(0xFFFF512F), // orange-red
-          Color(0xFFFFC837), // yellow
-        ],
-      ).createShader(const Rect.fromLTWH(0.0, 0.0, 300.0, 70.0));
-
   @override
   Widget build(BuildContext context) {
+    // Netflix style: white background, bold gradient text, centered
     return Scaffold(
-      backgroundColor: const Color(0xFF232526), // Deep blue/grey
+      backgroundColor: Colors.white,
       body: Center(
         child: AnimatedBuilder(
-          animation: _controller,
+          animation: _textController,
           builder: (context, child) {
             return Opacity(
-              opacity: _fadeAnimation.value,
-              child: Transform.scale(
-                scale: _scaleAnimation.value,
+              opacity: _textFade.value,
+              child: SlideTransition(
+                position: _textSlide,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // App Name with vibrant rainbow gradient
-                    Text(
-                      'Play & Learn',
-                      style: TextStyle(
-                        fontSize: 44,
-                        fontWeight: FontWeight.bold,
-                        foreground: Paint()..shader = _rainbowShader,
-                        letterSpacing: 2,
-                        fontFamily: 'ComicSans', // If available
-                        shadows: [
-                          Shadow(
-                            blurRadius: 16,
-                            color: Colors.black.withOpacity(0.5),
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
+                    ShaderMask(
+                      shaderCallback: (Rect bounds) {
+                        return const LinearGradient(
+                          colors: [
+                            Color.fromARGB(255, 79, 4, 114), // Purple
+                            Color.fromARGB(255, 151, 22, 153), // Pink
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ).createShader(bounds);
+                      },
+                      child: const Text(
+                        'PLAY & LEARN',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 48,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 3,
+                          color: Colors.white, // This will be replaced by shader
+                          fontFamily: 'Montserrat', // Netflix style font (optional)
+                        ),
                       ),
                     ),
-                    Text(
-                      'ENGLISH',
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.yellow[600],
-                        letterSpacing: 8,
-                        fontFamily: 'ComicSans',
-                        shadows: [
-                          Shadow(
-                            blurRadius: 8,
-                            color: Colors.deepPurple.withOpacity(0.3),
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    // Cute tagline
+                    const SizedBox(height: 18),
                     Text(
                       "Fun way to learn English! ⭐",
                       style: TextStyle(
                         fontSize: 18,
-                        color: Colors.cyan[200],
+                        color: Colors.purple[200],
                         fontWeight: FontWeight.w600,
                         fontStyle: FontStyle.italic,
                         letterSpacing: 1,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 6,
-                            color: Colors.black.withOpacity(0.2),
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
                       ),
                     ),
                     const SizedBox(height: 40),
-                    // Bold colorful progress indicator
-                    TweenAnimationBuilder<double>(
-                      tween: Tween<double>(begin: 0, end: 1),
-                      duration: const Duration(seconds: 2),
-                      builder: (context, value, child) {
-                        return CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            HSVColor.lerp(
-                              HSVColor.fromAHSV(1, 220, 1, 1), // blue
-                              HSVColor.fromAHSV(1, 320, 1, 1), // magenta
-                              value,
-                            )!
-                                .toColor(),
-                          ),
-                          strokeWidth: 7,
-                        );
-                      },
+                    const CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFB721FF)),
+                      strokeWidth: 4,
                     ),
                   ],
                 ),
